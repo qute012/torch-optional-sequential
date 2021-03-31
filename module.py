@@ -12,12 +12,7 @@ class OptionalSequential(nn.Module):
     def forward(self, *args, **kwargs):
         opt_params = list(kwargs.keys())
         opt_inputs = list(kwargs.values())
-
-        if len(args) == 1:
-            inputs = args[0]
-        else:
-            inputs = args
-
+        
         for layer in self.layers:
             params = set(layer.forward.__code__.co_varnames)
             opt_lparams = list(set(opt_params) & params)
@@ -25,9 +20,9 @@ class OptionalSequential(nn.Module):
             opt = self.make_dict(opt_lparams, opt_linputs)
 
             if len(opt) == 0:
-                inputs = layer(inputs)
+                inputs = layer(*args)
             else:
-                inputs = layer(inputs, **opt)
+                inputs = layer(*args, **opt)
         return inputs
 
     @staticmethod
