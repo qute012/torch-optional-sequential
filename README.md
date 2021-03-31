@@ -1,6 +1,8 @@
 # torch-optional-sequential
 
 ```
+from module import OptionalSequential
+
 class A(nn.Module):
   def forward(self,x):
     print(x)
